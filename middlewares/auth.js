@@ -11,7 +11,7 @@ const isAuthentication = async (req, res, next) => {
     });
 
   const decodeduser = await jwt.decode(token, process.env.JWT_SECRET);
-  req.user = await User.findOne(decodeduser._id);
+  req.user = await User.findById(decodeduser._id);
   next();
 };
 

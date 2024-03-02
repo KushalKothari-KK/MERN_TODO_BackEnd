@@ -26,10 +26,6 @@ const loginUser = async (req, res, next) => {
     if (!isMatched)
       return next(new ErrorHandler("Invalid username or password", 404));
     sendCookie(user, res, `Welcome back ${user.name}`, 200);
-    res.status(200).json({
-      success: true,
-      message: "Login Successfully",
-    });
   } catch (err) {
     next(err);
   }

@@ -1,4 +1,5 @@
 const Task = require("../models/task");
+const { ErrorHandler } = require("../middlewares/error");
 
 const newTask = async (req, res, next) => {
   try {
@@ -34,7 +35,7 @@ const updateTask = async (req, res, next) => {
   try {
     const { id } = req.params;
     const task = await Task.findById(id);
-    if (!task) return next(new Error("Task Not Found")); //will be replaced with custom error handler
+    if (!task) return next(new ErrorHandler("Task Not Found", 404));
     task.isCompleted = !task.isCompleted;
     await task.save();
 
@@ -51,7 +52,7 @@ const deleteTask = async (req, res, next) => {
   try {
     const { id } = req.params;
     const task = await Task.findById(id);
-    if (!task) return next(new Error("Task Not Found"));
+    if (!task) return next(new ErrorHandler("Task Not Found", 404));
     await task.deleteOne();
     res.status(200).json({
       success: true,

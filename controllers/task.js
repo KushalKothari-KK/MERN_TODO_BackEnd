@@ -1,38 +1,40 @@
 const Task = require("../models/task");
 
-const newTask = async (req, res) => {
+const newTask = async (req, res, next) => {
   try {
     const { title, description } = req.body;
     await Task.create({
       title,
       description,
+      user: req.user,
     });
     res.status(201).json({
       success: true,
       message: "Task Added successfully",
     });
   } catch (err) {
-    console.log(err); //with custom error handler
+    next(err);
   }
 };
 
-const getTask = async (req, res) => {
+const getTask = async (req, res, next) => {
   try {
-    const tasks = await Task.find({}); //{} will be replaced with userID
+    const userId = req.user._id;
+    const tasks = await Task.find({ user: userId }); //{} will be replaced with userID
     res.status(200).json({
       success: true,
       tasks,
     });
   } catch (err) {
-    console.log(err); //with custom error handler
+    next(err);
   }
 };
 
-const updateTask = async (req, res) => {
+const updateTask = async (req, res, next) => {
   try {
     const { id } = req.params;
     const task = await Task.findById(id);
-    if (!task) return next(new Error("Task Not Found"));
+    if (!task) return next(new Error("Task Not Found")); //will be replaced with custom error handler
     task.isCompleted = !task.isCompleted;
     await task.save();
 
@@ -41,11 +43,11 @@ const updateTask = async (req, res) => {
       message: "Task Updated",
     });
   } catch (err) {
-    console.log(err); //with custom error handler
+    next(err);
   }
 };
 
-const deleteTask = async (req, res) => {
+const deleteTask = async (req, res, next) => {
   try {
     const { id } = req.params;
     const task = await Task.findById(id);
@@ -56,7 +58,7 @@ const deleteTask = async (req, res) => {
       message: "Task Deleted",
     });
   } catch (err) {
-    console.log(err); //with custom error handler
+    next(err);
   }
 };
 

@@ -13,11 +13,11 @@ const taskSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  //   user: {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     required: true,
-  //     ref: "User",
-  //   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
   createdAt: {
     type: Date,
     default: Date.now,

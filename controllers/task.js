@@ -21,7 +21,7 @@ const newTask = async (req, res, next) => {
 const getTask = async (req, res, next) => {
   try {
     const userId = req.user._id;
-    const tasks = await Task.find({ user: userId }); //{} will be replaced with userID
+    const tasks = await Task.find({ user: userId });
     res.status(200).json({
       success: true,
       tasks,

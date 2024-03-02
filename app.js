@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const taskRouter = require("./routes/task");
 const usersRouter = require("./routes/users");
+const { errorMiddleware } = require("./middlewares/error");
 
 dotenv.config();
 const app = express();
@@ -24,5 +25,7 @@ app.use("/api/v1/users", usersRouter);
 app.get("/", (req, res) => {
   res.send("Welcome to Node TODO App");
 });
+
+app.use(errorMiddleware);
 
 module.exports = app;
